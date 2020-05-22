@@ -40,20 +40,17 @@ public class boardController {
 	public String showList(Model model, boardDTO boardDTO) {
 		int Gtotal = boardDao.dbCount();
 		List<boardDTO> list = boardDao.dbSelect(boardDTO);
-		
-		int num = 1;
-		for(int i=1; i<=Gtotal;i++) {
-			num = i/num;
-			System.out.println("숫자 : "+ num);
-			
+		while(list.size()>Gtotal) {
 			boardDTO dto = new boardDTO();
 			list.add(dto);
-			 
-			System.out.println("숫자 2: "+ list);
+			
+			System.out.println("숫자list : "+ list);
+			break;
 		}
 		
 		//List<boardDTO> list = boardService.getList();
 		//Log.info("list : "+list);
+		
 		model.addAttribute("list", list);
 		model.addAttribute("total", Gtotal);
 		return "list";
