@@ -12,12 +12,14 @@
 </head>
 <body>
 	<h1>게시물 리스트</h1>
-	
-	<c:forEach var="list" items="${list}">
+	<c:forEach var="list" items="${list}" varStatus="st">
 		<section>
-		번호 : ${list.seq}, 아이디 : ${list.userid}, 제목 : ${list.title}, 내용 : ${list.content}
-		</section>
-		
+		번호 : ${st.index + 1 }, 아이디 : ${list.userid}, 제목 : ${list.title}, 내용 : ${list.detail}
+		</section>		
 	</c:forEach>
+	
+	<p>
+	<a href="/home/main">[index]</a> 
+  	<a href="/board/write">[글쓰기]</a>
 </body>
 </html>

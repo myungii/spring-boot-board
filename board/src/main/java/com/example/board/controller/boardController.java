@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +25,37 @@ public class boardController {
 	@Autowired
 	boardDAOImp boardDao;
 	
+	@RequestMapping("/board/write")
+	public String boardWrite() {
+		return "write";
+	}
+	
+	@RequestMapping("/board/insert")
+	public String boardInsert(boardDTO boardDTO) {
+	  boardDao.dbInsert(boardDTO); 
+	  return "redirect:/board/list";
+	}//end
+	
 	@RequestMapping("/board/list")
 	public String showList(Model model, boardDTO boardDTO) {
-		
+		int Gtotal = boardDao.dbCount();
 		List<boardDTO> list = boardDao.dbSelect(boardDTO);
+		
+		int num = 1;
+		for(int i=1; i<=Gtotal;i++) {
+			num = i/num;
+			System.out.println("숫자 : "+ num);
+			
+			boardDTO dto = new boardDTO();
+			list.add(dto);
+			 
+			System.out.println("숫자 2: "+ list);
+		}
+		
 		//List<boardDTO> list = boardService.getList();
 		//Log.info("list : "+list);
 		model.addAttribute("list", list);
+		model.addAttribute("total", Gtotal);
 		return "list";
 	}
 }

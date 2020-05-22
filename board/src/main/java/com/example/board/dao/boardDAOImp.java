@@ -19,13 +19,17 @@ public class boardDAOImp implements boardDAO {
 	boardDAO boardDao;
 
 	
-	public void insert(boardDTO board) {
+	public void dbInsert(boardDTO board) {
 		temp.save(board);
 	}
 	
 	public List<boardDTO> dbSelect( boardDTO board) {
 		   return (List<boardDTO>)temp.findAll();
 		}//end
+	
+	public int dbCount() {
+		  return (int)temp.count();
+	}//end
 	
 	public List<boardDTO> getList(){
 		return boardDao.getList();
