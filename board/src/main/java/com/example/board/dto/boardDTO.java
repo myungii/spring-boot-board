@@ -1,4 +1,4 @@
-package com.example.board;
+package com.example.board.dto;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -8,10 +8,12 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Data
 @Getter
 @Setter
 @ToString
@@ -21,9 +23,13 @@ public class boardDTO  {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int seq;
 	
+	@Column(name="userid")
 	private String userid;
+	@Column(name="name")
 	private String name;
+	@Column(name="title")
 	private String title;
+	@Column(name="detail")
 	private String detail;
 	@Column(name="hit",insertable = false, updatable = false, columnDefinition = "number default 0")
 	private int hit;
