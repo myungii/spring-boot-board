@@ -1,6 +1,8 @@
 package com.example.board.dto;
 
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,14 +21,14 @@ import lombok.ToString;
 @ToString
 @Entity
 public class boardDTO  { 
-	@Id
+	@Id //pk설정
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int seq;
-	
+	private int seq;	
 	@Column(name="userid")
 	private String userid;
 	@Column(name="name")
 	private String name;
+	
 	@Column(name="title")
 	private String title;
 	@Column(name="detail")

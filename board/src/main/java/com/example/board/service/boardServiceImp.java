@@ -16,7 +16,6 @@ public class boardServiceImp implements boardService {
 		
 		List<boardDTO> list = new ArrayList<>();
 		
-		
 		return list;
 	}
 }
