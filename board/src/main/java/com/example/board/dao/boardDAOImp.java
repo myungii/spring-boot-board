@@ -42,16 +42,29 @@ public class boardDAOImp implements boardDAO {
 	}
 	
 	//게시판 리스트 페이징 출력
-	public List<boardDTO> dbSelect(paging paging, String sval) {
+	public List<boardDTO> dbSelect(paging paging) {
+		Pageable pageable = PageRequest.of(paging.getPageNUM()-1, 10, Sort.by("seq").descending());
+		//PageRequest.of(page, size, sort)
+		Page<boardDTO> all = temp.findAll(pageable);
+		  
+		return all.getContent();
+	}//end
+	
+	public List<boardDTO> dbSelect(paging paging, String sval, String skey) {
 		Pageable pageable = PageRequest.of(paging.getPageNUM()-1, 10, Sort.by("seq").descending());
 		//PageRequest.of(page, size, sort)
 		//Page<boardDTO> all = temp.findAll(pageable);
-		if(sval == null || sval == "") {sval ="";}
-		List<boardDTO> list = temp.findByTitleContaining(sval, pageable);
+		List<boardDTO> list = new ArrayList<boardDTO> ();
+		if(sval == null || sval == "") {sval = "";}
+		if(skey == null || skey == "") {skey = "title";}
+		System.out.println("검색 : "+sval+" "+skey);
+		if(skey == "title") {list = temp.findByTitleContaining(sval, pageable);}
+		else if(skey == "userid") {list = temp.findByUseridContaining(sval, pageable);}
+		else {list = temp.findByDetailContaining(sval, pageable);}
 		  
 		//return all.getContent();
 		return list;
-	}//end
+	}
 	
 	
 	//게시물 총 갯수의 메소드
@@ -60,11 +73,9 @@ public class boardDAOImp implements boardDAO {
 	}//end
 	
 	//상세보기 (한 건 출력)
-	public boardDTO dbDetail(int seq) {
-		boardDTO dto = new boardDTO(); 
+	public boardDTO dbDetail(boardDTO dto) {
 		
-		//temp.findAllById(seq);
-		 return dto;
+		 return temp.findById(dto.getSeq()).get();
 	}
 	
 	//게시물 한 건 삭제

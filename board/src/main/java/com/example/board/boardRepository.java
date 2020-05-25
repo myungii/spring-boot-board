@@ -16,7 +16,9 @@ import com.example.board.dto.boardDTO;
 public interface boardRepository extends JpaRepository<boardDTO, Integer> {//pk int형
 	
 	List<boardDTO> findByTitleContaining(String sval, Pageable pageable);
-	
+	List<boardDTO> findByUseridContaining(String sval, Pageable pageable);
+	List<boardDTO> findByDetailContaining(String sval, Pageable pageable);
+	boardDTO findBySeq(int seq);
 	
 	 /* @Query(value = "select iu from UrnMapping iu where iu.urn like %:text% or iu.contact like %:text%")
 	    Page<UrnMapping> fullTextSearch(@Param("text") String text, Pageable pageable);

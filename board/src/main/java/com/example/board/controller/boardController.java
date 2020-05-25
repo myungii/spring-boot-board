@@ -1,6 +1,8 @@
 package com.example.board.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,7 @@ import com.example.board.service.boardService;
 
 import groovy.util.logging.Slf4j;
 import jline.internal.Log;
+import net.bytebuddy.utility.privilege.GetSystemPropertyAction;
 
 @Controller
 @Slf4j //디버깅 용도
@@ -61,11 +65,12 @@ public class boardController {
 	@GetMapping("/board/list")
 	public String showList(Model model, boardDTO boardDTO, Pageable pageable, HttpServletRequest request) {
 		int Gtotal = boardDao.dbCount();
-		int startpage, endpage, temp, pagecount;
+		int start,end, startpage, endpage, temp, pagecount;
 		
 		String pnum = request.getParameter("pageNum");
 		String sval = request.getParameter("keyword");
 		String skey = request.getParameter("keyfield");
+		String returnpage = "&keyfield="+skey+"&keyword"+sval;
 		
 		if(pnum == null || pnum.equals("") || pnum =="") {pnum ="1";}
 		int pageNUM = Integer.parseInt(pnum);
@@ -75,12 +80,15 @@ public class boardController {
 		if(Gtotal%10 == 0) {pagecount = Gtotal/10;}
 		else {pagecount = (Gtotal/10)+1;}
 		
+		start = (pageNUM-1)*10;
+		
 		temp = (pageNUM-1)%10;
 		startpage = pageNUM-temp;
 		endpage = startpage+9;
 		if(endpage>pagecount) {endpage=pagecount;}
 		
-		List<boardDTO> list = boardDao.dbSelect(paging, sval);
+		List<boardDTO> list = boardDao.dbSelect(paging, sval, skey);
+		
 		
 		model.addAttribute("list", list);
 		model.addAttribute("total", Gtotal);
@@ -89,14 +97,36 @@ public class boardController {
 		model.addAttribute("pageNUM", pageNUM);
 		model.addAttribute("pagecount", pagecount);
 		model.addAttribute("size", list.size()); //행번호 출력용
+		model.addAttribute("returnpage", returnpage);
+		model.addAttribute("start", start);
 		
 		return "list";
 	}
 	
 	@RequestMapping("/board/detail")
-	public String detail(Model model, @RequestParam("seq") int seq) {
+	public String detail(boardDTO boardDTO, Model model) {
+		boardDTO dto =boardDao.dbDetail(boardDTO);
 		
-		model.addAttribute("dto", boardDao.dbDetail(seq));
+		model.addAttribute("dto", dto);
 		return "detail";
+	}
+	
+	@RequestMapping("/board/delete")
+	public String delete(boardDTO boardDTO) {
+		boardDao.dbDelete(boardDTO);
+		return "redirect:/board/list";
+	}
+	
+	@RequestMapping("/board/preedit")
+	public String preedit(boardDTO boardDTO, Model model) {
+		boardDTO dto =boardDao.dbDetail(boardDTO);
+		model.addAttribute("dto", dto);
+		return "edit";
+	}
+	
+	@RequestMapping("/board/edit")
+	public String edit(boardDTO boardDTO) {
+		boardDTO dto = boardDao.dbEdit(boardDTO);
+		return "redirect:/board/detail?seq="+dto.getSeq();
 	}
 }
