@@ -84,7 +84,7 @@ input::-moz-paceholder{color : #a8a8a8;}
 		<table class="table table-striped">
 			<thead>
 				<tr>
-				
+					<th></th>
 					<th>번 호</th>
 					<th>아이디</th>
 					<th>제 목</th>
@@ -96,10 +96,12 @@ input::-moz-paceholder{color : #a8a8a8;}
 			<tbody>
 				<c:forEach var="list" items="${list}" varStatus="st">
 					<tr>
-					
+					<td>${list.seq}</td>
 						<td>${start=start+1}</td>
 						<td>${list.userid}</td>
-						<td><a href="/board/detail?seq=${list.seq}">${list.title}</a></td>
+						<td>
+							<a href="/board/detail?seq=${list.seq}">${list.title}</a>
+						</td>
 						<td>${list.hit}</td>
 						<td>${list.recommend}</td>
 						<td>${list.wdate}</td>

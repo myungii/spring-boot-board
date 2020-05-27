@@ -22,6 +22,8 @@ import com.example.board.boardRepository;
 import com.example.board.dto.boardDTO;
 import com.example.board.dto.paging;
 
+import groovy.ui.text.FindReplaceUtility;
+
 @Service
 @Component //Autowired에 의한 연결적용
 public class boardDAOImp implements boardDAO {
@@ -57,11 +59,11 @@ public class boardDAOImp implements boardDAO {
 		List<boardDTO> list = new ArrayList<boardDTO> ();
 		if(sval == null || sval == "") {sval = "";}
 		if(skey == null || skey == "") {skey = "title";}
-		System.out.println("검색 : "+sval+" "+skey);
-		if(skey == "title") {list = temp.findByTitleContaining(sval, pageable);}
-		else if(skey == "userid") {list = temp.findByUseridContaining(sval, pageable);}
+		System.out.println("검색 : "+sval+" "+skey+" paging : "+paging.getSval()+" "+paging.getSval());
+		if(skey.equals("title")) {list = temp.findByTitleContaining(sval, pageable);}
+		else if(skey.equals("userid")) {list = temp.findByUseridContaining(sval, pageable);}
 		else {list = temp.findByDetailContaining(sval, pageable);}
-		  
+		boardDTO boardDTO = new boardDTO();
 		//return all.getContent();
 		return list;
 	}
@@ -74,8 +76,13 @@ public class boardDAOImp implements boardDAO {
 	
 	//상세보기 (한 건 출력)
 	public boardDTO dbDetail(boardDTO dto) {
-		
+		//temp.save(dto);
 		 return temp.findById(dto.getSeq()).get();
+	}
+	
+	//게시물 조회수 업데이트
+	public void dbHit(int hit) {
+		temp.updateHit(hit);
 	}
 	
 	//게시물 한 건 삭제
@@ -88,4 +95,9 @@ public class boardDAOImp implements boardDAO {
 		return temp.save(dto);
 	}
 	
+	//댓글갯수 출력
+	public int rcnt(List<boardDTO> board) {
+		
+		return 0;
+	}
 }

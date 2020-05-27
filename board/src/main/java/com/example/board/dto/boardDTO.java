@@ -1,14 +1,24 @@
 package com.example.board.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.example.board.dto.boardreplyDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 import lombok.Getter;
@@ -20,9 +30,10 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class boardDTO  { 
+public class boardDTO  { 	
 	@Id //pk설정
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="seq")
 	private int seq;	
 	@Column(name="userid")
 	private String userid;
@@ -39,6 +50,8 @@ public class boardDTO  {
 	private int recommend;
 	@Column(name="wdate", insertable = false, updatable = false, columnDefinition = "date default sysdate")
 	private Date wdate;
-	
-	
+
+	@OneToMany(mappedBy = "boardDTO" ,cascade = CascadeType.REMOVE)
+	  private List<boardreplyDTO> boardreplyDTO = new ArrayList<>();
+
 }

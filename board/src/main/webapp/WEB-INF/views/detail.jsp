@@ -21,9 +21,7 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 <title>detail.jsp</title>
 <style type="text/css">
-.container {
-	width: 70%;
-}
+
 </style>
 
 <script type="text/javascript">
@@ -74,7 +72,10 @@
 				onclick="location.href='/board/delete?seq=${dto.seq}'">삭제하기</button>
 			<button type="button" class="btn btn-outline-dark"
 				onclick="location.href='/board/preedit?seq=${dto.seq}'">수정하기</button>
-		</p>
+		</p><br>
+		
+		 <c:import url="/reply/list"/>
+		
 	</div>
 
 </body>

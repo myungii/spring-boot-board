@@ -58,13 +58,53 @@
 }
 </style>
 <script type="text/javascript">
+
+	function userid_chk(){
+		if(myform.userid.value == null || myform.userid.value == ""){
+			alert("아이디를 입력하세요");
+			myform.userid.focus();
+			return false;
+		} else{
+			myform.name.focus();
+			return true;
+		}
+	}
+
+	function name_chk(){
+		if(myform.name.value == null || myform.name.value == ""){
+			alert("이름을 입력하세요");
+			myform.name.focus();
+			return false;
+		} else{
+			myform.title.focus();
+			return true;
+		}
+	}
+
+	function title_chk(){
+		if(myform.title.value == null || myform.title.value == ""){
+			alert("제목을 입력하세요");
+			myform.title.focus();
+			return false;
+		} else {return true;}
+	}
+
 	
+	
+	function nullCheck(){
+		if(confirm('저장하시겠습니까?') == true) {
+			if(!( userid_chk()&& name_chk()&& title_chk() ) == false )	
+					document.myform.submit();
+		}
+		
+	}
 </script>
 </head>
 <body>
 
 	<div class="container">
-		<h1>게시물 리스트</h1>
+		<h2>글쓰기</h2>
+		<p>내 맘대로 글을 써 보세요!</p>
 	
 		<form name="myform" action="/board/insert">
 		<div class="id_form">
@@ -73,7 +113,7 @@
 					<span class="input-group-text" id="inputGroup-sizing-default">아이디</span>
 				</div>
 				<div class="text_size">
-					<input type="text" class="form-control" name="userid"
+					<input type="text" class="form-control" name="userid" 
 						aria-label="Sizing example input"
 						aria-describedby="inputGroup-sizing-default">
 				</div>
@@ -84,7 +124,7 @@
 					<span class="input-group-text" id="inputGroup-sizing-default">이 &nbsp; 름</span>
 				</div>
 				<div class="text_size">
-					<input type="text" class="form-control" name="title"
+					<input type="text" class="form-control" name="name"
 						aria-label="Sizing example input"
 						aria-describedby="inputGroup-sizing-default">
 				</div>
@@ -116,7 +156,7 @@
 			<br>
 
 			<p class="text-right">
-				<button type="submit" class="btn btn-outline-primary">글올리기</button>
+				<button type="button" class="btn btn-outline-primary" onclick="nullCheck();">글올리기</button>
 				<button type="button" class="btn btn-outline-dark"
 					onclick="location.href='/board/list'">목록으로</button>
 			</p>

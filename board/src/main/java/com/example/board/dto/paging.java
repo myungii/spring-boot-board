@@ -12,4 +12,7 @@ public class paging {
 	private int start, end;
 	private int startpage, endpage, temp, pagecount;
 	private int Gtotal;
+	
+	private String skey;
+	private String sval;
 }
