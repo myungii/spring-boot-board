@@ -17,11 +17,15 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.board.dto.boardDTO;
 import com.example.board.dto.boardreplyDTO;
+import com.example.board.dto.paging;
+import com.example.board.dto.recommendDTO;
 
-public interface boardreplyRepository extends JpaRepository<boardreplyDTO, Integer> {//pk int형
+public interface recommendRepository extends JpaRepository<recommendDTO, Integer> {//pk int형
 	
-	List<boardreplyDTO> findBySeq(int seq, Pageable pageable);
-	boardreplyDTO findBySeq(int seq);
-	
-	
+	 //추천수 업데이트
+	 @Query(value = "select count(*) from recommendDTO where seq = ?1 and userid = ?2", nativeQuery = true)
+	 int recommend_cnt(@Param("seq") int seq, @Param("userid") String userid);
+	 
+	 @Query(value = "update recommendDTO set recommend = recommend + 1 where seq = ?1 and userid = ?2", nativeQuery = true)
+	 void up(@Param("seq") int seq, @Param("userid") String userid);
 }

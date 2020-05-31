@@ -27,52 +27,59 @@
 	width: 70%;
 }
 
-input:-ms-input-placeholer{color : #a8a8a8;}
-input::-webkit-input-placeholder{color : #a8a8a8;}
-input::-moz-paceholder{color : #a8a8a8;}
-
-#keyfield{
-	font-size : 10pt;
-	height : 40px;
-	width : 110px;
-	padding : 10px;
-	border : 1px solid #1b5ac2;
-	outline : none;
-	float : left;
+input:-ms-input-placeholer {
+	color: #a8a8a8;
 }
 
-.search_option{
-	height : 40px;
-	width : 300px;
-	border : 1px solid #1b5ac2;
-	background : #ffffff;
-	float : left;
+input::-webkit-input-placeholder {
+	color: #a8a8a8;
 }
 
-#search_text{
-	font-size : 12pt;
-	width : 225px;
-	height : 38px;
-	padding : 10px;
-	border : 0px;
-	outline : none;
-	float : left;
+input::-moz-paceholder {
+	color: #a8a8a8;
 }
 
-#search_button{
-	width : 50px;
-	height : 100%;
-	border : 0px;
-	background : #1b5ac2;
-	outline : none;
-	float : right;
-	color : #ffffff;
+#keyfield {
+	font-size: 10pt;
+	height: 40px;
+	width: 110px;
+	padding: 10px;
+	border: 1px solid #1b5ac2;
+	outline: none;
+	float: left;
 }
 
-.padding{
-	padding-bottom : 10em;
+.search_option {
+	height: 40px;
+	width: 300px;
+	border: 1px solid #1b5ac2;
+	background: #ffffff;
+	float: left;
 }
 
+#search_text {
+	font-size: 12pt;
+	width: 225px;
+	height: 38px;
+	padding: 10px;
+	border: 0px;
+	outline: none;
+	float: left;
+}
+
+#search_button {
+	width: 50px;
+	height: 100%;
+	border: 0px;
+	background: #1b5ac2;
+	outline: none;
+	float: right;
+	color: #ffffff;
+}
+
+.padding {
+	padding-bottom: 10em;
+}
 </style>
 </head>
 <body>
@@ -95,60 +102,63 @@ input::-moz-paceholder{color : #a8a8a8;}
 			</thead>
 			<tbody>
 				<c:forEach var="list" items="${list}" varStatus="st">
+
 					<tr>
-					<td>${list.seq}</td>
+						<td>${list.seq}</td>
 						<td>${start=start+1}</td>
 						<td>${list.userid}</td>
-						<td>
-							<a href="/board/detail?seq=${list.seq}">${list.title}</a>
-						</td>
+						<td><a href="/board/detail?seq=${list.seq}">${list.title}</a>
+							<c:forEach var="r" items="${r}">
+								<c:if test="${r.rcnt > 0 && r.seq == list.seq}">
+									<font style='color: red;'>[${r.rcnt}]</font>
+								</c:if>
+							</c:forEach></td>
 						<td>${list.hit}</td>
 						<td>${list.recommend}</td>
 						<td>${list.wdate}</td>
 					</tr>
+
 				</c:forEach>
 			</tbody>
 		</table>
 		<hr>
-		
-		
-	
-        <div class="col-lg-6 offset-lg-5 py-1">
-            <ul class="pagination mx-auto">
-            <c:if test="${startpage>10}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="/board/list?pageNum=${startpage-10}${returnpage}" aria-label="Previous">
-                        <span aria-hidden="true">«</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
-             </c:if>
-             
-             <c:forEach var="i" begin="${startpage}" end="${endpage}">
+
+
+
+		<div class="col-lg-6 offset-lg-5 py-1">
+			<ul class="pagination mx-auto">
+				<c:if test="${startpage>10}">
+					<li class="page-item disabled"><a class="page-link"
+						href="/board/list?pageNum=${startpage-10}${returnpage}"
+						aria-label="Previous"> <span aria-hidden="true">«</span> <span
+							class="sr-only">Previous</span>
+					</a></li>
+				</c:if>
+
+				<c:forEach var="i" begin="${startpage}" end="${endpage}">
 					<c:choose>
 						<c:when test="${pageNUM == i}">
-                			<li class="page-item active">
-                    			<a class="page-link" href="#"><font style='color: blue;'>${i}</font></a>
-                			</li>
-                		</c:when>
-                		<c:otherwise>
-                			 <li class="page-item"><a class="page-link" href="/board/list?pageNum=${i}${returnpage}">${i}</a></li>
-                		</c:otherwise>
-                	</c:choose>
-               </c:forEach>
-               
-               <c:if test="${endpage<pagecount}">
-                <li class="page-item disabled">
-                    <a class="page-link" href="/board/list?pageNum=${startpage+10}${returnpage}" aria-label="Next">
-                        <span aria-hidden="true">»</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
-             </c:if>
-            </ul>
-       </div>	
-       
-       <div class="main_link">
+							<li class="page-item active"><a class="page-link" href="#"><font
+									style='color: blue;'>${i}</font></a></li>
+						</c:when>
+						<c:otherwise>
+							<li class="page-item"><a class="page-link"
+								href="/board/list?pageNum=${i}${returnpage}">${i}</a></li>
+						</c:otherwise>
+					</c:choose>
+				</c:forEach>
+
+				<c:if test="${endpage<pagecount}">
+					<li class="page-item disabled"><a class="page-link"
+						href="/board/list?pageNum=${startpage+10}${returnpage}"
+						aria-label="Next"> <span aria-hidden="true">»</span> <span
+							class="sr-only">Next</span>
+					</a></li>
+				</c:if>
+			</ul>
+		</div>
+
+		<div class="main_link">
 			<p class="text-right">
 				<button type="button" class="btn btn-outline-primary"
 					onclick="location.href='/board/write'">글쓰기</button>
@@ -169,17 +179,18 @@ input::-moz-paceholder{color : #a8a8a8;}
 						<option value="detail"
 							<c:if test="${skey.equals('detail')}">selected</c:if>>
 							내용</option>
-					</select> 
-				
+					</select>
+
 					<div class="search_option">
-					<input type="text" id="search_text" name="keyword" value="${sval}" placeholder="검색어 입력">
-					<input type="submit" id="search_button" value="검색">
+						<input type="text" id="search_text" name="keyword" value="${sval}"
+							placeholder="검색어 입력"> <input type="submit"
+							id="search_button" value="검색">
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-	
+
 
 </body>
 </html>

@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.board.boardRepository;
+import com.example.board.recommendRepository;
 import com.example.board.dto.boardDTO;
 import com.example.board.dto.paging;
+import com.example.board.dto.recommendDTO;
 
 import groovy.ui.text.FindReplaceUtility;
 
@@ -29,6 +31,8 @@ import groovy.ui.text.FindReplaceUtility;
 public class boardDAOImp implements boardDAO {
 	@Autowired
 	private boardRepository temp;
+	@Autowired
+	private recommendRepository re_temp;
 	@Autowired
 	boardDAO boardDao;
 	
@@ -63,7 +67,7 @@ public class boardDAOImp implements boardDAO {
 		if(skey.equals("title")) {list = temp.findByTitleContaining(sval, pageable);}
 		else if(skey.equals("userid")) {list = temp.findByUseridContaining(sval, pageable);}
 		else {list = temp.findByDetailContaining(sval, pageable);}
-		boardDTO boardDTO = new boardDTO();
+	
 		//return all.getContent();
 		return list;
 	}
@@ -81,8 +85,8 @@ public class boardDAOImp implements boardDAO {
 	}
 	
 	//게시물 조회수 업데이트
-	public void dbHit(int hit) {
-		temp.updateHit(hit);
+	public void dbHit(int hit, int seq) {
+		temp.updateHit(hit, seq);
 	}
 	
 	//게시물 한 건 삭제
@@ -96,8 +100,35 @@ public class boardDAOImp implements boardDAO {
 	}
 	
 	//댓글갯수 출력
-	public int rcnt(List<boardDTO> board) {
-		
-		return 0;
+	public List<paging> rcnt() {
+		List<boardDTO> list = new ArrayList<boardDTO> ();
+		List<paging> rlist = new ArrayList<paging> ();
+		list = temp.replySelect();
+		for(int i=0; i<list.size(); i++) {
+			
+			paging p = new paging();
+			int seq =list.get(i).getSeq();
+			
+			p.setRcnt(temp.rcnt(seq));
+			p.setSeq(seq);
+			
+			rlist.add(p);
+		}
+		System.out.println("rlist : "+rlist);
+		return rlist;
 	}
+	
+	//추천수 업데이트
+	/*public void up(boardDTO dto) { 
+		
+		int check = re_temp.recommend_cnt(dto.getSeq(),  dto.getUserid());
+		System.out.println("check : "+check);
+		if(check<=0) {
+			recommendDTO rdto= new recommendDTO();
+			rdto.setSeq(dto.getSeq()); rdto.setUserid(dto.getUserid()); rdto.setRecommend(1);
+			re_temp.save(rdto);
+			temp.updateUp(dto.getSeq());
+			System.out.println("추천수가 올랐습니다");
+		}
+	}*/
 }

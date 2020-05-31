@@ -64,6 +64,8 @@ public class boardController {
 		String sval = request.getParameter("keyword");
 		String skey = request.getParameter("keyfield");
 		
+		boardDao.dbCount();
+		
 		if(pnum == null || pnum.equals("") || pnum =="") {pnum ="1";}
 		int pageNUM = Integer.parseInt(pnum);
 		paging paging = new paging();
@@ -89,24 +91,34 @@ public class boardController {
 			model.addAttribute("returnpage", returnpage);
 		}
 		List<boardDTO> list = boardDao.dbSelect(paging, sval, skey);
-	
+		List<paging> rlist = boardDao.rcnt();
+		
+		model.addAttribute("r", rlist); 
 		model.addAttribute("list", list);
 		model.addAttribute("total", Gtotal);
 		model.addAttribute("startpage", startpage);
 		model.addAttribute("endpage", endpage);
 		model.addAttribute("pageNUM", pageNUM);
 		model.addAttribute("pagecount", pagecount);
-		model.addAttribute("size", list.size()); //행번호 출력용
+		
 		model.addAttribute("start", start);
 		
 		return "list";
 	}
 	
+	/*@RequestMapping("/board/thumbsUp")
+	public String up(@RequestParam("seq") int seq, @RequestParam("userid") String userid) {
+		boardDTO dto = new boardDTO();
+		dto.setSeq(seq); dto.setUserid(userid);
+		boardDao.up(dto);
+		return "redirect:/board/detail?seq="+seq;
+	}*/
+	
 	@RequestMapping("/board/detail")
 	public String detail(boardDTO boardDTO, Model model, HttpServletRequest request) {
 		
 		boardDTO dto = boardDao.dbDetail(boardDTO);
-		boardDao.dbHit(dto.getHit());
+		boardDao.dbHit(dto.getHit(), dto.getSeq());
 		String pnum = request.getParameter("pageNum");
 		
 		if(pnum == null || pnum.equals("") || pnum =="") {pnum ="1";}

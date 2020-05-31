@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.board.boardRepository;
 import com.example.board.boardreplyRepository;
 import com.example.board.dao.boardDAO;
 import com.example.board.dto.boardDTO;
@@ -29,6 +30,8 @@ import com.example.board.dto.boardreplyDTO;
 public class boardreplyDAOImp implements boardreplyDAO {
 	@Autowired
 	private boardreplyRepository temp;
+	@Autowired
+	private boardRepository btemp;
 	@Autowired
 	boardreplyDAO boardreplyDao;
 	
@@ -45,7 +48,7 @@ public class boardreplyDAOImp implements boardreplyDAO {
 	
 	//댓글 페이징 출력
 	public List<boardreplyDTO> dbSelect(paging paging, boardreplyDTO dto) {
-		Pageable pageable = PageRequest.of(paging.getPageNUM()-1, 5, Sort.by("rseq").descending());
+		Pageable pageable = PageRequest.of(paging.getPageNUM()-1, 3, Sort.by("rseq").descending());
 		//PageRequest.of(page, size, sort)
 		//Page<boardreplyDTO> all = temp.findAll(pageable);
 		List<boardreplyDTO> list = new ArrayList<boardreplyDTO>();
@@ -53,6 +56,12 @@ public class boardreplyDAOImp implements boardreplyDAO {
 		  
 		return list;
 	}//end
+	
+	//댓글 갯수 출력
+	public int dbRcnt(int re_seq) {
+		
+		return btemp.rcnt(re_seq);
+	}
 	
 	
 	//댓글 한 건 삭제

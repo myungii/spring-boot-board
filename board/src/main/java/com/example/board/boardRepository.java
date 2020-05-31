@@ -17,6 +17,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.board.dto.boardDTO;
 import com.example.board.dto.boardreplyDTO;
+import com.example.board.dto.paging;
 
 public interface boardRepository extends JpaRepository<boardDTO, Integer> {//pk int형
 	
@@ -28,17 +29,19 @@ public interface boardRepository extends JpaRepository<boardDTO, Integer> {//pk 
 	 //조회수 업데이트
 	 @Transactional
 	 @Modifying
-	 @Query(value = "UPDATE boardDTO set hit = ?1 + 1", 
+	 @Query(value = "UPDATE boardDTO set hit = ?1 + 1 where seq= ?2", 
 	            nativeQuery = true)
-	void updateHit(@Param("hit") int hit);
+	void updateHit(@Param("hit") int hit, @Param("seq") int seq);
 	 
-	 @Query(value = "select count(r.seq) as rcnt from boardreplyDTO r inner join boardDTO b" + 
-		 		"  on r.seq = b.seq where r.seq = ?1", nativeQuery = true)
+	 //게시판 리스트 제목 옆 댓글 갯수 출력
+	 @Query(value = "select * from boardDTO", nativeQuery = true)
+	 List<boardDTO> replySelect();
+	 
+	 @Query(value = "select count(*) from boardreplyDTO where seq = ?1", nativeQuery = true)
 	 int rcnt(@Param("seq") int seq);
 	 
-	 
-	 /* @Query(value = "select iu from UrnMapping iu where iu.urn like %:text% or iu.contact like %:text%")
-	    Page<UrnMapping> fullTextSearch(@Param("text") String text, Pageable pageable);
-	}
-	*/
+	 //추천수 업데이트
+	 @Query(value = "update boardDTO set recommend = recommend + 1 where seq = ?", nativeQuery = true)
+	 void updateUp(@Param("seq") int seq);
+	
 }

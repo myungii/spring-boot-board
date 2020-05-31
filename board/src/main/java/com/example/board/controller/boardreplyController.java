@@ -54,7 +54,9 @@ public class boardreplyController {
 	@GetMapping("/reply/list")
 	public String showList(Model model, boardreplyDTO boardreplyDTO, Pageable pageable, HttpServletRequest request) {
 		int start,end, startpage, endpage, temp, pagecount;
-		//int total = dao.dbCount(boardreplyDTO);
+		//댓글 갯수 출력
+		int total = dao.dbRcnt(boardreplyDTO.getSeq());
+		
 		String pnum = request.getParameter("pageNum");
 		
 		if(pnum == null || pnum.equals("") || pnum =="") {pnum ="1";}
@@ -63,7 +65,7 @@ public class boardreplyController {
 		paging.setPageNUM(pageNUM);
 	
 	
-		start = (pageNUM-1)*10;
+		start = (pageNUM-1)*3;
 		paging.setStart(start);
 		
 		startpage = pageNUM-1;
@@ -79,7 +81,7 @@ public class boardreplyController {
 		model.addAttribute("startpage", startpage);
 		model.addAttribute("endpage", endpage);
 		model.addAttribute("pageNUM", pageNUM);
-		//model.addAttribute("total", total);
+		model.addAttribute("total", total);
 		model.addAttribute("pagecount", pagecount);
 		model.addAttribute("start", start);
 		return "reply";
